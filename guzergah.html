@@ -1,0 +1,302 @@
+<!DOCTYPE html> 
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Güzergahlar ve Doluluk Oranları</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="app3.js" defer></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #eef2f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 40px 0;
+      font-size: 3em;
+      color: #242d74;
+      font-weight: bold;
+      animation: slideIn 1s ease-out;
+    }
+
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .graph-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 40px;
+      padding: 10px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .logout-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 1.8em;
+            color: #4e73df;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+    .logout-icon:hover {
+            color: #007bff;
+        }
+
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    
+
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin-top: 20px;
+      animation: slideInFromLeft 1s ease-out;
+    }
+
+    
+    @keyframes slideInFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 350px;
+      border: 1px solid #ddd;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .form-row label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-row select {
+      flex: 1;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1em;
+    }
+
+    select,
+    button {
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+    }
+
+    button {
+      background-color: #242d74;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    button:hover {
+      background-color: #1d95c7;
+      transform: scale(1.05);
+    }
+
+    #addGraphButton {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      background-color: #247469;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #addGraphButton:hover {
+      background-color: #218838;
+      transform: scale(1.1);
+    }
+
+    #compareButton {
+      display: none;
+      margin: 20px auto;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      background-color: #247469;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    
+
+    #compareButton:hover {
+      background-color: #218838;
+      transform: scale(1.1);
+    }
+
+    canvas {
+      width: 350px !important;
+      height: 350px !important;  
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      animation: fadeInCanvas 2s ease-out forwards;
+    }
+
+    
+    @keyframes fadeInCanvas {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    
+    #comparisonResults table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #ddd;
+      margin-top: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #333;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #comparisonResults th,
+    #comparisonResults td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+
+    #comparisonResults th {
+      background-color: #242d74;
+      color: white;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    #comparisonResults tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #comparisonResults tr:hover {
+      background-color: #e8f0fe;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #comparisonResults td {
+      border-bottom: 1px solid #ddd;
+    }
+
+    #comparisonResults th:first-child,
+    #comparisonResults td:first-child {
+      text-align: left;
+    }
+
+    #comparisonResults {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f8f9fc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <a href="otobus.html" class="logout-icon">
+    <i class="fas fa-right-from-bracket"></i>
+  </a>
+
+  <h1>Güzergahlar ve Doluluk Oranları</h1>
+
+  <div id="filterSection">
+    <div class="filter-container">
+      <form id="filterForm">
+        <div class="form-row">
+          <label for="year">Yıl:</label>
+          <select id="year" name="year"></select>
+          <label for="month">Ay:</label>
+          <select id="month" name="month">
+            <option value="">Tümü</option>
+          </select>
+        </div>
+        <button type="submit">Filtrele</button>
+      </form>
+    </div>
+
+    <button id="addGraphButton">Yeni Grafik Ekle</button>
+    <button id="compareButton">Kıyasla</button>
+  </div>
+
+  <div class="graph-container">
+    <canvas id="guzergahGrafik"></canvas>
+  </div>
+
+  <div id="comparisonResults"></div>
+</body>
+</html>

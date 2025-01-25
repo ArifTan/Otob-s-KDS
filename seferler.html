@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Seferler</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .logout-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 1.8em;
+            color: #4e73df;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .logout-icon:hover {
+            color: #007bff;
+        }
+
+        .filter-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #242d74;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <a href="otobus.html" class="logout-icon">
+        <i class="fas fa-right-from-bracket"></i>
+    </a>
+    <h1>Seferler Listesi</h1>
+
+    <div class="filter-container">
+        <label for="yearFilter">Yıl Seçin: </label>
+        <select id="yearFilter">
+            <option value="">Tüm Yıllar</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+
+        <label for="ayFilter">Ay Seçin: </label>
+        <select id="ayFilter">
+            <option value="">Tüm Aylar</option>
+            <option value="1">Ocak</option>
+            <option value="2">Şubat</option>
+            <option value="3">Mart</option>
+            <option value="4">Nisan</option>
+            <option value="5">Mayıs</option>
+            <option value="6">Haziran</option>
+            <option value="7">Temmuz</option>
+            <option value="8">Ağustos</option>
+            <option value="9">Eylül</option>
+            <option value="10">Ekim</option>
+            <option value="11">Kasım</option>
+            <option value="12">Aralık</option>
+        </select>
+
+        <label for="dayFilter">Gün Seçin: </label>
+        <select id="dayFilter">
+            <option value="">Tüm Günler</option>
+        </select>
+
+        <label for="gecikmeFilter">Gecikme Nedeni: </label>
+        <select id="gecikmeFilter">
+            <option value="">Tümü</option>
+            
+        </select>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Güzergah Adı</th>
+                <th>Şoför Adı</th>
+                <th>Sefer Tarihi</th>
+                <th>Dolu Koltuk</th>
+                <th>Koltuk Sayısı</th>
+                <th>Doluluk Oranı</th>
+                <th>Sefer Saati</th>
+                <th>Gecikme Nedeni</th>
+            </tr>
+        </thead>
+        <tbody id="seferlerListesi">
+            
+        </tbody>
+    </table>
+
+    <script src="app2.js"></script>
+</body>
+</html>
+

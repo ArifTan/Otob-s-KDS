@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Yalova Seyahat - Admin Paneli</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+        #view-details-button {
+            background-color: #247469;
+            color: white;
+            border: none;
+            padding: 5px 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #view-details-button:hover {
+            background-color: green;
+        }
+
+        
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="sidebar">
+            <div class="profile">
+                <div class="avatar">
+                    <img src="image (1).png" alt="Logo" width="95" height="95">
+                </div>
+                <h2>PAMUKKALE</h2>
+                <p>Admin Paneli</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="guzergah.html">Güzergâh Doluluk Oranı</a></li>
+                    <li><a href="durum.html">Durum</a></li>
+                    <li><a href="seferler.html">Sefer Detayları</a></li>
+                    <li><a href="otodetay.html">Otobüs Detayları</a></li>
+                    <li><a href="soforler.html">Şoför Detayları</a></li>
+                    <li><a href="login.html"><i class="fas fa-right-from-bracket"></i> Çıkış Yap</a></li>
+
+                </ul>
+            </nav>
+        </div>
+
+        
+        <div class="main-content">
+            
+            <div class="cards">
+                <div class="card">
+                    <h3>Toplam Otobüs Sayısı</h3>
+                    <p id="bus-count">Veri Yükleniyor...</p>
+                </div>
+                <div class="card">
+                    <h3>Toplam Sefer Sayısı</h3>
+                    <p id="trip-count">Veri Yükleniyor...</p>
+                </div>
+                <div class="card">
+                    <h3>Toplam Şoför Sayısı</h3>
+                    <p id="driver-count">Veri Yükleniyor...</p>
+                </div>
+            </div>
+            <div class="route-selection">
+                <label for="route-select">Güzergah Seçin:</label>
+                <select id="route-select">
+                    <option value="">Güzergah Seçin</option>
+                    
+                </select>
+                <label for="month-select">Ay Seçin:</label>
+                <select id="month-select">
+                    <option value="">Bir Ay Seçin</option>
+                   
+                </select>
+                <button id="view-details-button">Detay Görüntüle</button>
+            </div>
+
+            
+            <div class="charts">
+                <div class="chart-container">
+                    <canvas id="occupancy-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="monthly-occupancy-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        
+            const monthSelect = document.getElementById("month-select");
+            for (let i = 1; i <= 12; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+                option.textContent = `${i}. Ay`;
+                monthSelect.appendChild(option);
+            }
+
+            
+            document.getElementById("view-details-button").addEventListener("click", () => {
+                const selectedRoute = document.getElementById("route-select").value;
+                const selectedMonth = document.getElementById("month-select").value;
+
+                if (selectedRoute && selectedMonth) {
+                    const params = new URLSearchParams({ guzergahId: selectedRoute, ay: selectedMonth });
+                    window.location.href = `seferler.html?${params.toString()}`;
+                } else {
+                    alert("Lütfen hem güzergah hem de ay seçiniz.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

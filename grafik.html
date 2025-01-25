@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yalova Seyahat Yönetici Paneli</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9fafb;
+            color: #333;
+        }
+
+        
+        .chart-container {
+            width: 90%;
+            max-width: 650px;
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-size: 2rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .chart {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        
+        .filter {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            align-items: center;
+        }
+
+        select {
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        select:focus {
+            background-color: #fff;
+            border-color: #3498db;
+        }
+
+        
+        select:hover {
+            cursor: pointer;
+            border-color: #3498db;
+        }
+
+        .filter label {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2>Güzergâh Doluluk Oranı</h2>
+        <div class="chart">
+            <canvas id="routeChart"></canvas>
+        </div>
+        
+        <div class="filter">
+            <div>
+                <label for="monthSelect">Ay Seçin:</label>
+                <select id="monthSelect">
+                    <option value="Ocak">Ocak</option>
+                    <option value="Şubat">Şubat</option>
+                    <option value="Mart">Mart</option>
+                    <option value="Nisan">Nisan</option>
+                    <option value="Mayıs">Mayıs</option>
+                    <option value="Haziran">Haziran</option>
+                </select>
+            </div>
+            <div>
+                <label for="yearSelect">Yıl Seçin:</label>
+                <select id="yearSelect">
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const routeData = {
+            'Yalova-İzmir': 85,
+            'Yalova-Ankara': 75,
+            'Yalova-Bursa': 65
+        };
+
+        
+        const ctx = document.getElementById('routeChart').getContext('2d');
+
+        let routeChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Yalova-İzmir', 'Yalova-Ankara', 'Yalova-Bursa'],
+                datasets: [{
+                    label: 'Doluluk Oranı',
+                    data: [routeData['Yalova-İzmir'], routeData['Yalova-Ankara'], routeData['Yalova-Bursa']],
+                    backgroundColor: ['#1abc9c', '#f39c12', '#e74c3c'],
+                    borderColor: ['#ffffff', '#ffffff', '#ffffff'],
+                    borderWidth: 3,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                },
+                cutout: '50%', 
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (tooltipItem) => {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+
+        monthSelect.addEventListener('change', updateChart);
+        yearSelect.addEventListener('change', updateChart);
+
+        function updateChart() {
+            
+            const selectedMonth = monthSelect.value;
+            const selectedYear = yearSelect.value;
+            console.log(`Seçilen Ay: ${selectedMonth}, Seçilen Yıl: ${selectedYear}`);
+        }
+    </script>
+</body>
+</html>
